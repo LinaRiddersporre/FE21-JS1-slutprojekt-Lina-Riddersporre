@@ -1,0 +1,12 @@
+body{
+    background-color: lightblue;
+}
+
+form, #informationDiv{
+    background-color: white;
+}
+
+#weatherWrapper{
+    border: 2px solid grey;
+    margin: 2px;
+}

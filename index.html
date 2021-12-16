@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+        crossorigin="anonymous" defer></script>
+    <script src="js/script.js" defer></script>
+    <title>Väder</title>
+</head>
+<body>
+    <header>
+        <h1>SunnySideUp</h1>
+    </header>
+    <form>
+        <fieldset>
+            <label for="nameOfCity">Stad</label>
+            <input type="text" id="nameOfCity" placeholder="Ange stad">
+            <button type="submit" id="searchButton">Sök</button>
+            <br>
+            <a href="#" id="fiveDaySearch">5-dagars prognos</a>
+        </fieldset>
+    </form>
+    <div id="weatherWrapper">
+        <div id="pictureDiv">
+            <p id="pictureP"></p>
+            <img src="img/happy-sun300'200.jpg" id="image" alt="weather icon">
+        </div>
+        <div id="informationDiv">
+
+        </div>
+    </div>
+</body>
+</html>
