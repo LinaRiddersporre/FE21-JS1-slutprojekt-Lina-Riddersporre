@@ -86,6 +86,11 @@ function displayCurrentWeather(_icon, _description, _temp, _rh, _wind){
     let temp = document.createElement('p');
     informationDiv.appendChild(temp);
     temp.innerText='Temp: '+ _temp +'°C';
+    if(_temp <= 0){
+        document.body.style.backgroundColor = 'blue';
+    } else if(_temp < 5){
+        document.body.style.backgroundColor = 'red';
+    }
     console.log(_temp);
 
     let humidity = document.createElement('p');
