@@ -1,12 +1,59 @@
 body{
     background-color: lightblue;
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
 }
 
-form, #informationDiv{
+header{
+    display: flex;
+    justify-content: center;
+}
+
+h1{
+    color: #ffe600;
+    text-shadow: 
+    -1px 1px 0 #000,
+    1px 1px 0 #000,
+    1px -1px 0 #000,
+    -1px -1px 0 #000;
+}
+
+fieldset{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+#searchButton{
+    width: 7rem;
+    margin: auto;
+    margin-top: 3px;
+}
+
+#pictureDiv{
+    display: flex;
+    justify-content: center;
+    padding-top: 1rem;
+}
+
+form{
     background-color: white;
+    width: auto;
 }
 
 #weatherWrapper{
-    border: 2px solid grey;
-    margin: 2px;
+    width: auto;
+}
+
+@media (min-width: 380px) {
+    input{
+        width: 300px;
+        
+    }
+    
+    fieldset{
+        width: auto;
+    }
+    
 }

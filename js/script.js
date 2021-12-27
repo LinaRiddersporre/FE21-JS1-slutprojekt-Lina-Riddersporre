@@ -1,14 +1,12 @@
 const key = 'cd9c64a6a3f44627ae7ee9891dfd8605';
-const searchButton = document.getElementById('searchButton');
-const cityName = document.getElementById('nameOfCity');
-const fiveDaySearch = document.getElementById('fiveDaySearch');
+const searchButton = $('#searchButton')[0];
+const cityName = $('#nameOfCity')[0];
+const fiveDaySearch = $('#fiveDaySearch')[0];
 
 fiveDaySearch.addEventListener('click', function(){
     deleteItems();
     getWeatherForcast(cityName.value, key);
-    
 })
-
 
 function getWeatherForcast(cityName, key){
     const url = `https://api.weatherbit.io/v2.0/forecast/daily?city=${cityName}&key=${key}&lang=sv`;
@@ -33,9 +31,6 @@ function getWeatherForcast(cityName, key){
     )
 }
 
-
-
-
 searchButton.addEventListener('click', function(event){
     deleteItems();
     getCurrentWeather(cityName.value, key);
@@ -43,7 +38,6 @@ searchButton.addEventListener('click', function(event){
     
     event.preventDefault();
 })
-
 
 function getCurrentWeather(cityName, key){
     const url = `https://api.weatherbit.io/v2.0/current?count=5&city=${cityName}&key=${key}&lang=sv`;
@@ -64,14 +58,16 @@ function getCurrentWeather(cityName, key){
             console.log(error);
             
             alert('Staden hittades inte, försök gärna igen.');
-            
         }
     )
 }
 
 function displayCurrentWeather(_icon, _description, _temp, _rh, _wind){
 
-    const informationDiv = document.getElementById('informationDiv');
+    const informationDiv = $('#informationDiv')[0];
+    informationDiv.style.padding = '1rem';
+    informationDiv.style.border = 'solid 3px white';
+
     let weatherIcon = document.createElement('img');
     informationDiv.appendChild(weatherIcon);
     weatherIcon.src = `https://www.weatherbit.io/static/img/icons/${_icon}.png`;
@@ -87,9 +83,11 @@ function displayCurrentWeather(_icon, _description, _temp, _rh, _wind){
     informationDiv.appendChild(temp);
     temp.innerText='Temp: '+ _temp +'°C';
     if(_temp <= 0){
-        document.body.style.backgroundColor = 'blue';
-    } else if(_temp < 5){
-        document.body.style.backgroundColor = 'red';
+        $("#informationDiv")[0].style.backgroundColor = "lightskyblue";
+    } else if(_temp <= 7){
+        $("#informationDiv")[0].style.backgroundColor = "orange";
+    } else if(_temp > 7){
+        $("#informationDiv")[0].style.backgroundColor = "red";
     }
     console.log(_temp);
 
@@ -106,32 +104,49 @@ function displayCurrentWeather(_icon, _description, _temp, _rh, _wind){
 
 function displayWeatherForcast(_icon, _currentDate, _description, _temp){
 
-    const informationDiv = document.getElementById('informationDiv');
+    const informationDiv = $('#informationDiv')[0];
+    informationDiv.style.padding = '0rem';
+    informationDiv.style.border = 'none';
+    
+    let backGroundDiv = document.createElement('div');
+    backGroundDiv.className = 'forecastDiv';
+    informationDiv.appendChild(backGroundDiv);
+    backGroundDiv.style.padding = '1rem';
+    backGroundDiv.style.border = 'solid 3px white';
+    informationDiv.style.backgroundColor = 'white';
     let weatherIcon = document.createElement('img');
-    informationDiv.appendChild(weatherIcon);
+    backGroundDiv.appendChild(weatherIcon);
     weatherIcon.src = `https://www.weatherbit.io/static/img/icons/${_icon}.png`;
     console.log(weatherIcon);
 
     let currentDate = document.createElement('p');
-    informationDiv.appendChild(currentDate);
+    backGroundDiv.appendChild(currentDate);
     currentDate.innerText='Datum: '+ _currentDate;
     console.log(_currentDate);
 
     let description = document.createElement('p');
-    informationDiv.appendChild(description);
+    backGroundDiv.appendChild(description);
     description.innerText='Beskrivning: '+ _description;
     console.log(_description);
 
     let temp = document.createElement('p');
-    informationDiv.appendChild(temp);
+    backGroundDiv.appendChild(temp);
     temp.innerText='Temp: '+ _temp +'°C';
+    if(_temp <= 0){
+        backGroundDiv.style.backgroundColor = "lightskyblue";
+    } else if(_temp <= 7){
+        backGroundDiv.style.backgroundColor = "orange";
+    } else if(_temp > 7){
+        backGroundDiv.style.backgroundColor = "red";
+    }
     console.log(_temp);
 
 }
 
 function deleteItems(){
-    const allElements = document.querySelectorAll('p');
-    const allImgElements = document.querySelectorAll('img');
+    const allElements = $('p');
+    const allImgElements = $('img');
+    const allDivElements = $('.forecastDiv');
     for(let i = 0; i<allElements.length; i++){
         const pElement = allElements[i];
         console.log('element: ', pElement);
@@ -141,6 +156,11 @@ function deleteItems(){
         const imgElement = allImgElements[i];
         console.log('elementImg: ', imgElement);
         imgElement.remove();
+    }
+    for(let i = 0; i<allDivElements.length; i++){
+        const divElement = allDivElements[i];
+        console.log('elementImg: ', divElement);
+        divElement.remove();
     }
     
 }
