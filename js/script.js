@@ -1,24 +1,28 @@
+//Hämtar globala element från html dokumentet
 const key = 'cd9c64a6a3f44627ae7ee9891dfd8605';
 const searchButton = $('#searchButton')[0];
 const cityName = $('#nameOfCity')[0];
 const fiveDaySearch = $('#fiveDaySearch')[0];
-const animationDivDiv = $('#animationDivDiv');
-animationDivDiv.style.display = 'none';
+const animationDiv = $('#animationDiv')[0];
+animationDiv.style.display = 'none';
 
+//skapande utav vänteanimation
 let animation = anime({
-    targets: '#animationDivDiv',
-    translateX: 270,
+    targets: '#animationDiv',
+    translateX: 175,
     loop: true,
     direction: 'alternate',
     easing: 'easeInOutSine'
   });
 
+//Vid klick på länken tas eventuella element bort och hämtar vädret för 5dagar samt startar min animation
 fiveDaySearch.addEventListener('click', function(){
     deleteItems();
     getWeatherForcast(cityName.value, key);
-    animation.style.display = "inline-block";
+    animationDiv.style.display = "inline-block";
 })
 
+//funktionen som hämtar vädret för 5dagar och avslutar animationen
 function getWeatherForcast(cityName, key){
     const url = `https://api.weatherbit.io/v2.0/forecast/daily?city=${cityName}&key=${key}&lang=sv`;
     fetch(url).then(
@@ -33,24 +37,27 @@ function getWeatherForcast(cityName, key){
                 const weatherData = data.data[i];
                 displayWeatherForcast(weatherData.weather.icon, weatherData.valid_date, weatherData.weather.description, weatherData.temp);
             }
+            animationDiv.style.display = 'none';
         }
     ).catch(
         function (error){
             console.log(error);
             alert('Staden hittades inte, försök gärna igen.');
-            animation.style.display = 'none';
+            animationDiv.style.display = 'none';
         }
     )
 }
 
+//Vid klick på knappen tas eventuella element bort och hämtar vädret för det nuvarande vädret samt startar animationen
 searchButton.addEventListener('click', function(event){
     deleteItems();
     getCurrentWeather(cityName.value, key);
     console.log(cityName.value)
-    animation.style.display = "inline-block";
+    animationDiv.style.display = "inline-block";
     event.preventDefault();
 })
 
+//funktionen som hämtar vädret som finns just nu och avslutar animationen
 function getCurrentWeather(cityName, key){
     const url = `https://api.weatherbit.io/v2.0/current?count=5&city=${cityName}&key=${key}&lang=sv`;
     fetch(url).then(
@@ -62,19 +69,20 @@ function getCurrentWeather(cityName, key){
         function(data){
             console.log('Data:', data);
             const weatherData = data.data[0];
-
             displayCurrentWeather(weatherData.weather.icon, weatherData.weather.description, weatherData.temp, weatherData.rh, weatherData.wind_spd);
+            animationDiv.style.display = 'none';
         }
     ).catch(
         function (error){
             console.log(error);
             
             alert('Staden hittades inte, försök gärna igen.');
-            animation.style.display = 'none';
+            animationDiv.style.display = 'none';
         }
     )
 }
 
+//funktionen som förvarar datan som kommit i sökningen i rätt divar och med texten i paragrafer
 function displayCurrentWeather(_icon, _description, _temp, _rh, _wind){
     const informationDiv = $('#informationDiv')[0];
     informationDiv.style.padding = '1rem';
@@ -95,6 +103,7 @@ function displayCurrentWeather(_icon, _description, _temp, _rh, _wind){
     let temp = document.createElement('p');
     informationDiv.appendChild(temp);
     temp.innerText= 'Temp: '+ _temp +'°C';
+    //If satsen bestämmer bakgrundsfärgen på de olika rutorna beroende på temperatur
     if(_temp <= 5){
         $("#informationDiv")[0].style.backgroundColor = "lightskyblue";
     } else if(_temp <= 15){
@@ -115,6 +124,8 @@ function displayCurrentWeather(_icon, _description, _temp, _rh, _wind){
     console.log(_wind);
 }
 
+//funktionen som förvarar datan som kommit i sökningen i rätt divar och med texten i paragrafer
+//Här används även en for-loop för att få tillräckligt många rutor med rätt information
 function displayWeatherForcast(_icon, _currentDate, _description, _temp){
 
     const informationDiv = $('#informationDiv')[0];
@@ -146,6 +157,7 @@ function displayWeatherForcast(_icon, _currentDate, _description, _temp){
     let temp = document.createElement('p');
     backGroundDiv.appendChild(temp);
     temp.innerText='Temp: '+ _temp +'°C';
+    //If satsen bestämmer bakgrundsfärgen på de olika rutorna beroende på temperatur
     if(_temp <= 5){
         backGroundDiv.style.backgroundColor = "lightskyblue";
     } else if(_temp <= 15){
@@ -157,6 +169,7 @@ function displayWeatherForcast(_icon, _currentDate, _description, _temp){
 
 }
 
+//funktionen som tar bort alla element
 function deleteItems(){
     const allElements = $('p');
     const allImgElements = $('img');

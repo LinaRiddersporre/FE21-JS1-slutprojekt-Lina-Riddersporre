@@ -31,13 +31,13 @@ fieldset{
     margin-top: 3px;
 }
 
-#animationDiv{
+#animationWrapper{
     display: flex;
-    justify-content: center;
+    margin: auto;
+    width: 200px;
 }
 
-
-#animationDivDiv{
+#animationDiv{
     width: 25px;
     height: 25px;
     background-color: olivedrab;
