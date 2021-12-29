@@ -20,6 +20,8 @@ fiveDaySearch.addEventListener('click', function(){
     deleteItems();
     getWeatherForcast(cityName.value, key);
     animationDiv.style.display = "inline-block";
+    fiveDaySearch.style.display = 'none';
+    searchButton.style.display = 'none';
 })
 
 //funktionen som hämtar vädret för 5dagar och avslutar animationen
@@ -38,12 +40,16 @@ function getWeatherForcast(cityName, key){
                 displayWeatherForcast(weatherData.weather.icon, weatherData.valid_date, weatherData.weather.description, weatherData.temp);
             }
             animationDiv.style.display = 'none';
+            fiveDaySearch.style.display = 'inline-block';
+            searchButton.style.display = 'inline-block';
         }
     ).catch(
         function (error){
             console.log(error);
             alert('Staden hittades inte, försök gärna igen.');
             animationDiv.style.display = 'none';
+            fiveDaySearch.style.display = 'inline-block';
+            searchButton.style.display = 'inline-block';
         }
     )
 }
@@ -54,7 +60,10 @@ searchButton.addEventListener('click', function(event){
     getCurrentWeather(cityName.value, key);
     console.log(cityName.value)
     animationDiv.style.display = "inline-block";
+    fiveDaySearch.style.display = 'none';
+    searchButton.style.display = 'none';
     event.preventDefault();
+
 })
 
 //funktionen som hämtar vädret som finns just nu och avslutar animationen
@@ -71,6 +80,8 @@ function getCurrentWeather(cityName, key){
             const weatherData = data.data[0];
             displayCurrentWeather(weatherData.weather.icon, weatherData.weather.description, weatherData.temp, weatherData.rh, weatherData.wind_spd);
             animationDiv.style.display = 'none';
+            fiveDaySearch.style.display = 'inline-block';
+            searchButton.style.display = 'inline-block';
         }
     ).catch(
         function (error){
@@ -78,6 +89,8 @@ function getCurrentWeather(cityName, key){
             
             alert('Staden hittades inte, försök gärna igen.');
             animationDiv.style.display = 'none';
+            fiveDaySearch.style.display = 'inline-block';
+            searchButton.style.display = 'inline-block';
         }
     )
 }
