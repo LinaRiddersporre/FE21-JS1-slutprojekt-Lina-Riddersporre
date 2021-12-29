@@ -2,10 +2,21 @@ const key = 'cd9c64a6a3f44627ae7ee9891dfd8605';
 const searchButton = $('#searchButton')[0];
 const cityName = $('#nameOfCity')[0];
 const fiveDaySearch = $('#fiveDaySearch')[0];
+const animationDivDiv = $('#animationDivDiv');
+animationDivDiv.style.display = 'none';
+
+let animation = anime({
+    targets: '#animationDivDiv',
+    translateX: 270,
+    loop: true,
+    direction: 'alternate',
+    easing: 'easeInOutSine'
+  });
 
 fiveDaySearch.addEventListener('click', function(){
     deleteItems();
     getWeatherForcast(cityName.value, key);
+    animation.style.display = "inline-block";
 })
 
 function getWeatherForcast(cityName, key){
@@ -26,7 +37,8 @@ function getWeatherForcast(cityName, key){
     ).catch(
         function (error){
             console.log(error);
-            alert('Staden hittades inte, försök gärna igen.')
+            alert('Staden hittades inte, försök gärna igen.');
+            animation.style.display = 'none';
         }
     )
 }
@@ -35,7 +47,7 @@ searchButton.addEventListener('click', function(event){
     deleteItems();
     getCurrentWeather(cityName.value, key);
     console.log(cityName.value)
-    
+    animation.style.display = "inline-block";
     event.preventDefault();
 })
 
@@ -58,12 +70,12 @@ function getCurrentWeather(cityName, key){
             console.log(error);
             
             alert('Staden hittades inte, försök gärna igen.');
+            animation.style.display = 'none';
         }
     )
 }
 
 function displayCurrentWeather(_icon, _description, _temp, _rh, _wind){
-
     const informationDiv = $('#informationDiv')[0];
     informationDiv.style.padding = '1rem';
     informationDiv.style.border = 'solid 3px white';
@@ -72,21 +84,22 @@ function displayCurrentWeather(_icon, _description, _temp, _rh, _wind){
     informationDiv.appendChild(weatherIcon);
     weatherIcon.src = `https://www.weatherbit.io/static/img/icons/${_icon}.png`;
     console.log(weatherIcon);
+    weatherIcon.classList.add("weatherIcon");
 
 
     let description = document.createElement('p');
     informationDiv.appendChild(description);
-    description.innerText='Beskrivning: '+ _description;
+    description.innerText= _description;
     console.log(_description);
 
     let temp = document.createElement('p');
     informationDiv.appendChild(temp);
-    temp.innerText='Temp: '+ _temp +'°C';
-    if(_temp <= 0){
+    temp.innerText= 'Temp: '+ _temp +'°C';
+    if(_temp <= 5){
         $("#informationDiv")[0].style.backgroundColor = "lightskyblue";
-    } else if(_temp <= 7){
+    } else if(_temp <= 15){
         $("#informationDiv")[0].style.backgroundColor = "orange";
-    } else if(_temp > 7){
+    } else if(_temp > 15){
         $("#informationDiv")[0].style.backgroundColor = "red";
     }
     console.log(_temp);
@@ -113,30 +126,31 @@ function displayWeatherForcast(_icon, _currentDate, _description, _temp){
     informationDiv.appendChild(backGroundDiv);
     backGroundDiv.style.padding = '1rem';
     backGroundDiv.style.border = 'solid 3px white';
-    informationDiv.style.backgroundColor = 'white';
+    informationDiv.style.backgroundColor = 'lightblue';
     let weatherIcon = document.createElement('img');
     backGroundDiv.appendChild(weatherIcon);
     weatherIcon.src = `https://www.weatherbit.io/static/img/icons/${_icon}.png`;
     console.log(weatherIcon);
+    weatherIcon.classList.add("weatherIcon");
 
     let currentDate = document.createElement('p');
     backGroundDiv.appendChild(currentDate);
-    currentDate.innerText='Datum: '+ _currentDate;
+    currentDate.innerText= _currentDate;
     console.log(_currentDate);
 
     let description = document.createElement('p');
     backGroundDiv.appendChild(description);
-    description.innerText='Beskrivning: '+ _description;
+    description.innerText= _description;
     console.log(_description);
 
     let temp = document.createElement('p');
     backGroundDiv.appendChild(temp);
     temp.innerText='Temp: '+ _temp +'°C';
-    if(_temp <= 0){
+    if(_temp <= 5){
         backGroundDiv.style.backgroundColor = "lightskyblue";
-    } else if(_temp <= 7){
+    } else if(_temp <= 15){
         backGroundDiv.style.backgroundColor = "orange";
-    } else if(_temp > 7){
+    } else if(_temp > 15){
         backGroundDiv.style.backgroundColor = "red";
     }
     console.log(_temp);
