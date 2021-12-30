@@ -5,6 +5,7 @@ const cityName = $('#nameOfCity')[0];
 const fiveDaySearch = $('#fiveDaySearch')[0];
 const animationDiv = $('#animationDiv')[0];
 animationDiv.style.display = 'none';
+let isSearchable = true;
 
 //skapande utav vänteanimation
 let animation = anime({
@@ -53,7 +54,7 @@ function getWeatherForcast(cityName, key){
         }
     )
 }
-let isSearchable = true;
+
 //Vid klick på knappen tas eventuella element bort och hämtar vädret för det nuvarande vädret samt startar animationen
 searchButton.addEventListener('click', function(event){
     deleteItems();
@@ -70,6 +71,7 @@ searchButton.addEventListener('click', function(event){
 
 //funktionen som hämtar vädret som finns just nu och avslutar animationen
 function getCurrentWeather(cityName, key){
+    //If-satsen är till för att undvika spam-tryck på enter
     if(isSearchable){
             const url = `https://api.weatherbit.io/v2.0/current?count=5&city=${cityName}&key=${key}&lang=sv`;
         fetch(url).then(
@@ -98,7 +100,7 @@ function getCurrentWeather(cityName, key){
             }
         )
     } else {
-        console.log('för många serveranrop, inväntar svar')
+        console.log('För många serveranrop, inväntar svar')
     }
     
 }
