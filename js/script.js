@@ -53,7 +53,7 @@ function getWeatherForcast(cityName, key){
         }
     )
 }
-
+let isSearchable = true;
 //Vid klick på knappen tas eventuella element bort och hämtar vädret för det nuvarande vädret samt startar animationen
 searchButton.addEventListener('click', function(event){
     deleteItems();
@@ -62,37 +62,45 @@ searchButton.addEventListener('click', function(event){
     animationDiv.style.display = "inline-block";
     fiveDaySearch.style.display = 'none';
     searchButton.style.display = 'none';
+    isSearchable = false;
     event.preventDefault();
 
 })
 
+
 //funktionen som hämtar vädret som finns just nu och avslutar animationen
 function getCurrentWeather(cityName, key){
-    const url = `https://api.weatherbit.io/v2.0/current?count=5&city=${cityName}&key=${key}&lang=sv`;
-    fetch(url).then(
-        function(response){
-            console.log('response:', response);
-            return response.json();
-        }
-    ).then(
-        function(data){
-            console.log('Data:', data);
-            const weatherData = data.data[0];
-            displayCurrentWeather(weatherData.weather.icon, weatherData.weather.description, weatherData.temp, weatherData.rh, weatherData.wind_spd);
-            animationDiv.style.display = 'none';
-            fiveDaySearch.style.display = 'inline-block';
-            searchButton.style.display = 'inline-block';
-        }
-    ).catch(
-        function (error){
-            console.log(error);
-            
-            alert('Staden hittades inte, försök gärna igen.');
-            animationDiv.style.display = 'none';
-            fiveDaySearch.style.display = 'inline-block';
-            searchButton.style.display = 'inline-block';
-        }
-    )
+    if(isSearchable){
+            const url = `https://api.weatherbit.io/v2.0/current?count=5&city=${cityName}&key=${key}&lang=sv`;
+        fetch(url).then(
+            function(response){
+                console.log('response:', response);
+                return response.json();
+            }
+        ).then(
+            function(data){
+                console.log('Data:', data);
+                const weatherData = data.data[0];
+                displayCurrentWeather(weatherData.weather.icon, weatherData.weather.description, weatherData.temp, weatherData.rh, weatherData.wind_spd);
+                animationDiv.style.display = 'none';
+                fiveDaySearch.style.display = 'inline-block';
+                searchButton.style.display = 'inline-block';
+                isSearchable = true;
+            }
+        ).catch(
+            function (error){
+                console.log(error);
+                
+                alert('Staden hittades inte, försök gärna igen.');
+                animationDiv.style.display = 'none';
+                fiveDaySearch.style.display = 'inline-block';
+                searchButton.style.display = 'inline-block';
+            }
+        )
+    } else {
+        console.log('för många serveranrop, inväntar svar')
+    }
+    
 }
 
 //funktionen som förvarar datan som kommit i sökningen i rätt divar och med texten i paragrafer
